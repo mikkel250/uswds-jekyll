@@ -1,0 +1,108 @@
+---
+layout: default
+permalink: /opportunity-project/
+footer: 
+  top: true
+
+---
+{% assign sprint = site.data.opportunity-project %}
+<section class="opportunity-hero--extended">
+  <div class="grid-container">
+    <div class="content-box grid-row grid-gap">
+      <p class="subheading">{{ sprint.sprint-dates }}</p>
+      <h1 class="title">{{ sprint.sprint-title }}</h1>
+      <p class="description">{{ sprint.sprint-description }}</p>
+    </div>
+  </div>
+</section>
+<section class="navigator">
+  {% for item in sprint.timeline %}
+  <a class="goto-section {% if forloop.index == 1 %} active{% endif %}"
+     aria-label="navigate to section week-{{ forloop.index }}" id="button-week-{{ forloop.index }}">
+    <svg class="large" width="37" height="36" viewBox="0 0 37 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18.914" cy="17.9999" r="16.4999" fill="white" stroke="#FFC402" stroke-width="3" />
+      <circle cx="18.9136" cy="17.9998" r="12.4615" fill="#FFC402" />
+    </svg>
+    <svg class="small" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15.5 9.5C15.5 13.4951 12.4642 16.5 9 16.5C5.53579 16.5 2.5 13.4951 2.5 9.5C2.5 5.50493 5.53579 2.5 9 2.5C12.4642 2.5 15.5 5.50493 15.5 9.5Z"
+            fill="white" stroke="#FFC402" stroke-width="5" />
+    </svg>
+
+  </a>
+  {% endfor %}
+</section>
+
+{% for item in sprint.timeline %}
+<section class="grid-col-12 task-list {% if forloop.index > 1 %}hidden{% endif %}" id="section-week-{{ forloop.index}}">
+  <div class="title-container">
+    <h1>Week {{ forloop.index }}</h1>
+    <p>{{ item.dates }}</p>
+  </div>
+  {% for task in item.tasks %}
+  <div class="task-container">
+    <h2>{{ task.headline }}</h2>
+    <p>{{ task.detail }}</p>
+  </div>
+  {% endfor %}
+</section>
+
+{% endfor %}
+
+<script>
+  let buttons = document.getElementsByClassName("goto-section");
+  // let id = "initalValue";
+
+  // loop through buttons and add an onclick event listener
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", function (event) {
+      // when clicked, check all the buttons and remove any active classes on the buttons and the sections. 
+      for (let i = 0; i < buttons.length; i++) {
+        // remove button active class if contained
+        if (buttons[i].classList.contains("active")) {
+          buttons[i].classList.toggle("active");
+          // get button ID, find, and hide corresponding section
+          let id = buttons[i].id;
+          id = id.replace("button", "section");
+          console.log(`indside IF id is ${id}`);
+          let section = document.getElementById(id);
+          // console.log(`section is ${section}`);
+          section.classList.add("hidden");
+          
+        }
+      // find ID of button that's clicked, then show section
+      }
+      let clickedId = event.target.id;
+      console.log(`clickedId is ${clickedId}`);
+      event.target.classList.add("active");
+      // console.log(`id is now ${id}`);
+      let sectionId = clickedId.replace("button", "section");
+      console.log(`sectionId is ${sectionId}`);
+      document.getElementById(sectionId).classList.toggle("hidden");
+      
+    });
+  }
+
+  /* possible refactor, time allowing
+  function addActiveClass(buttons, id) {
+    buttons[i].classList.toggle("active");
+    let id = buttons[i].id;
+    let id = id.replace("button", "section");
+    document.getElementById(id).classList.toggle("hidden");
+  }
+  
+  function changeActiveClass(buttons) {
+    // when clicked, check all the buttons and remove any active classes on the buttons and the sections.
+    let id = undefined; 
+    for (let i = 0; i < buttons.length; i++) {
+        if (buttons[i].classList.contains("active")) {
+          buttons[i].classList.toggle("active");
+          id = buttons[i].id;
+          id = id.replace("button", "section");
+          document.getElementById(id).classList.toggle("hidden");
+          break;
+        }
+      }
+      addActiveClass(buttons, id);
+  }
+  */
+</script>
