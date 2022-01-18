@@ -1,8 +1,8 @@
 ---
 layout: default
 permalink: /opportunity-project/
-footer: 
-  top: true
+footer:
+top: true
 
 ---
 {% assign sprint = site.data.opportunity-project %}
@@ -50,59 +50,38 @@ footer:
 
 <script>
   let buttons = document.getElementsByClassName("goto-section");
-  // let id = "initalValue";
 
-  // loop through buttons and add an onclick event listener
-  for (let i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener("click", function (event) {
-      // when clicked, check all the buttons and remove any active classes on the buttons and the sections. 
-      for (let i = 0; i < buttons.length; i++) {
-        // remove button active class if contained
-        if (buttons[i].classList.contains("active")) {
-          buttons[i].classList.toggle("active");
-          // get button ID, find, and hide corresponding section
-          let id = buttons[i].id;
-          id = id.replace("button", "section");
-          console.log(`indside IF id is ${id}`);
-          let section = document.getElementById(id);
-          // console.log(`section is ${section}`);
-          section.classList.add("hidden");
-          
-        }
-      // find ID of button that's clicked, then show section
-      }
-      let clickedId = event.target.id;
-      console.log(`clickedId is ${clickedId}`);
-      event.target.classList.add("active");
-      // console.log(`id is now ${id}`);
-      let sectionId = clickedId.replace("button", "section");
-      console.log(`sectionId is ${sectionId}`);
-      document.getElementById(sectionId).classList.toggle("hidden");
-      
-    });
-  }
-
-  /* possible refactor, time allowing
-  function addActiveClass(buttons, id) {
-    buttons[i].classList.toggle("active");
-    let id = buttons[i].id;
-    let id = id.replace("button", "section");
-    document.getElementById(id).classList.toggle("hidden");
-  }
-  
-  function changeActiveClass(buttons) {
-    // when clicked, check all the buttons and remove any active classes on the buttons and the sections.
-    let id = undefined; 
+  function hideSection(buttons) {
+    // when clicked, check all the buttons and remove any active classes on the buttons and the sections. 
     for (let i = 0; i < buttons.length; i++) {
-        if (buttons[i].classList.contains("active")) {
-          buttons[i].classList.toggle("active");
-          id = buttons[i].id;
-          id = id.replace("button", "section");
-          document.getElementById(id).classList.toggle("hidden");
-          break;
+          // remove button active class if contained
+          if (buttons[i].classList.contains("active")) {
+            buttons[i].classList.toggle("active");
+            // get button ID, find, and hide corresponding section
+            let id = buttons[i].id;
+            id = id.replace("button", "section");
+            let section = document.getElementById(id);
+            section.classList.add("hidden");
+          }
         }
-      }
-      addActiveClass(buttons, id);
   }
-  */
+  function showSection(event) {
+    // find ID of button that's clicked, then show corresponding section
+    let clickedId = event.target.id;
+    event.target.classList.add("active");
+    let sectionId = clickedId.replace("button", "section");
+    document.getElementById(sectionId).classList.toggle("hidden");
+  }
+
+  function gotoSection(buttons) {
+    // loop through buttons and add an onclick event listener
+    for (let i = 0; i < buttons.length; i++) {
+      buttons[i].addEventListener("click", function (event) {
+        hideSection(buttons);
+        showSection(event);
+      });
+    }
+  }
+
+  gotoSection(buttons);
 </script>
